@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.goodsmanage.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.goodsmanage.model.User">
+        <id property="sid" column="SID" jdbcType="INTEGER"/>
+        <result property="username" column="USERNAME" jdbcType="VARCHAR"/>
+        <result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
+        <result property="avatarFid" column="AVATAR_FID" jdbcType="INTEGER"/>
+        <result property="lastLogin" column="LAST_LOGIN" jdbcType="TIMESTAMP"/>
+        <result property="detailsText" column="DETAILS_TEXT" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        SID,USERNAME,
+        AVATAR_FID,LAST_LOGIN,DETAILS_TEXT
+    </sql>
+    <select id="findByUsername" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from USERS
+        where
+        USERNAME = #{username,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByUsernameAndPassword" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from USERS
+        where
+        USERNAME = #{username,jdbcType=VARCHAR}
+        AND PASSWORD = #{password,jdbcType=VARCHAR}
+    </select>
+    <select id="findBySid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from USERS
+        where
+        SID = #{sid,jdbcType=NUMERIC}
+    </select>
+    <select id="selectOneSidAndUsernameBySid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from USERS
+        where
+        SID = #{sid,jdbcType=NUMERIC}
+    </select>
+    <select id="findOneBySidAndUsername" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from USERS
+        where
+        SID = #{sid,jdbcType=NUMERIC}
+        AND USERNAME = #{username,jdbcType=VARCHAR}
+    </select>
+    <select id="findOnePasswordByUsername" resultMap="BaseResultMap">
+        select PASSWORD
+        from USERS
+        where USERNAME = #{username,jdbcType=VARCHAR}
+    </select>
+    <update id="updateInfo">
+        update USERS
+        set USERNAME     = #{username,jdbcType=VARCHAR},
+            PASSWORD     = #{password,jdbcType=VARCHAR},
+            AVATAR_FID   = #{avatarFid,jdbcType=NUMERIC},
+            DETAILS_TEXT = #{detailsText,jdbcType=VARCHAR}
+        where SID = #{sid,jdbcType=NUMERIC}
+    </update>
+</mapper>

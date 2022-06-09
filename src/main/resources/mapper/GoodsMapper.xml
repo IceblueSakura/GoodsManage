@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.goodsmanage.mapper.GoodsMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.goodsmanage.model.Goods">
+        <id property="gid" column="GID" jdbcType="DECIMAL"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="imgFid" column="IMG_FID" jdbcType="DECIMAL"/>
+        <result property="price" column="PRICE" jdbcType="FLOAT"/>
+        <result property="details" column="DETAILS" jdbcType="VARCHAR"/>
+        <result property="detailsType" column="DETAILS_TYPE" jdbcType="VARCHAR"/>
+        <result property="createUserid" column="CREATE_USERID" jdbcType="DECIMAL"/>
+        <result property="lastModified" column="LAST_MODIFIED" jdbcType="TIMESTAMP"/>
+        <result property="inventory" column="INVENTORY" jdbcType="DECIMAL"/>
+        <result property="classification" column="CLASSIFICATION" jdbcType="VARCHAR"/>
+        <result property="status" column="STATUS" jdbcType="VARCHAR"/>
+        <result property="lastModifiedUserid" column="LAST_MODIFIED_USERID" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        GID,NAME,IMG_FID,
+        PRICE,DETAILS,DETAILS_TYPE,
+        CREATE_USERID,LAST_MODIFIED,INVENTORY,
+        CLASSIFICATION,STATUS,LAST_MODIFIED_USERID
+    </sql>
+    <select id="findByGid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from GOODS
+        where
+        GID = #{gid,jdbcType=INTEGER}
+    </select>
+    <select id="findByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from GOODS
+        where
+        NAME = #{name,jdbcType=VARCHAR}
+    </select>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from GOODS
+    </select>
+    <select id="findOneByGidAndName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from GOODS
+        where
+        GID = #{gid,jdbcType=NUMERIC}
+        AND NAME = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateAll">
+        update GOODS
+        set NAME                 = #{name,jdbcType=VARCHAR},
+            IMG_FID              = #{imgFid,jdbcType=NUMERIC},
+            PRICE                = #{price,jdbcType=DECIMAL},
+            DETAILS              = #{details,jdbcType=VARCHAR},
+            DETAILS_TYPE         = #{detailsType,jdbcType=VARCHAR},
+            LAST_MODIFIED        = #{lastModified,jdbcType=TIMESTAMP},
+            INVENTORY            = #{inventory,jdbcType=NUMERIC},
+            CLASSIFICATION       = #{classification,jdbcType=VARCHAR},
+            STATUS               = #{status,jdbcType=VARCHAR},
+            LAST_MODIFIED_USERID = #{lastModifiedUserid,jdbcType=NUMERIC}
+        where GID = #{gid,jdbcType=NUMERIC}
+    </update>
+    <select id="findClassification" resultType="string">
+        select distinct CLASSIFICATION
+        from GOODS
+    </select>
+    <select id="findAllByClassification" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from GOODS
+        where
+        classification = #{name,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

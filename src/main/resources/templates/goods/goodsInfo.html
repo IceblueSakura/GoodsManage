@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理系统 - 商品详细信息查询</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+</head>
+<body class="container row">
+<h1>商品详细信息查询</h1>
+
+<div class="col-2"></div>
+<table class="table col-10">
+    <tr>
+        <th scope="row">GID：</th>
+        <th th:text="${goods.getGid()}"></th>
+    </tr>
+    <tr>
+        <th scope="row">商品名：</th>
+        <td th:text="${goods.getName()}"></td>
+    </tr>
+    <tr>
+        <th scope="row">价格：</th>
+        <td th:text="${goods.getPrice()}"></td>
+    </tr>
+    <tr>
+        <th scope="row">分类：</th>
+        <td th:text="${goods.getClassification()}"></td>
+    </tr>
+    <tr>
+        <th scope="row">库存：</th>
+        <td th:text="${goods.getInventory()}"></td>
+    </tr>
+    <tr>
+        <th scope="row">上架状态：</th>
+        <td th:text="${goods.getStatus()}"></td>
+    </tr>
+    <tr>
+        <th scope="row">创建用户：</th>
+        <td><a th:href="${'/user/sid/' + goods.getCreateUserSid()}" th:text="${goods.getCreateUserUsername()}"></a></td>
+    </tr>
+    <tr>
+        <th scope="row">最后修改用户：</th>
+        <td><a th:href="${'/user/sid/' + goods.getLastModifiedUserSid()}"
+               th:text="${goods.getLastModifiedUserUsername()}"></a></td>
+    </tr>
+    <tr>
+        <th scope="row">最后修改时间：</th>
+        <td th:text="${goods.getLastModified()}"></td>
+    </tr>
+    <tr>
+        <th scope="row">商品图：</th>
+        <td><img th:src="${goods.getImgUrl()}" th:alt="${goods.getName()}" alt="pic" class="img-fluid"></td>
+    </tr>
+    <tr>
+        <th scope="row">商品详情：</th>
+        <td>
+            <div id="details" th:text="${goods.getDetails()}"></div>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">操作：</th>
+        <td>
+            <a class="btn btn-primary" th:href="${'/goods/modified/' + goods.getGid()}">修改</a>
+            <a class="btn btn-secondary" th:href="${'/goods/delete/' + goods.getGid()}">删除</a>
+            <a class="btn btn-secondary" href="/">回到主页</a>
+        </td>
+    </tr>
+</table>
+<div class="col-2"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" crossorigin="anonymous"></script>
+<!-- 用于解析markdown类型的商品详细信息 -->
+
+<script th:inline="javascript">  <!-- 为了JavaScript内使用thymeleaf的变量需要加上th:inline -->
+const details = [[${goods.getDetails()}]];  // 介绍内容
+const detailsType = [[${goods.getDetailsType()}]].toString();  // 介绍的格式，markdown/text
+if (detailsType === "markdown") {
+    const renderer = {  // 自定义marked.js的Renderer,修改图片渲染样式
+        image(href, title, text) {  // 自定义图片格式
+            return `<img src="${href}" alt="${text}" class="img-thumbnail">`;  // bootstrap的缩略图class,为图片添加1px圆角边框
+        },
+        heading(text, level) {  // 自定义标题格式
+            const newLevel = level + 1;  // 给渲染结果的h1标签全部加一档
+            return `<h${newLevel} id="${text}">${text}</h${newLevel}>`
+        }
+    };
+    marked.use({renderer});
+
+// const markdown = "# 测试图片  \n\n  ![标题](/files/b21b103d317087cc90416d847111ab06.jpg)"
+    document.getElementById("details").innerHTML = marked.parse(details);  // 渲染details转html结果
+} else {
+    document.getElementById("details").textContent = details.toString();
+}
+
+</script>
+</body>
+</html>

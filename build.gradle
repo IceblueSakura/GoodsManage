@@ -1,0 +1,38 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    maven{
+        url "https://maven.aliyun.com/repository/public"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.7'   // springboot导入项
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.7'  // Thymeleaf模板引擎导入项
+    implementation 'com.auth0:java-jwt:3.19.2'  // JWT Token导入项
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.1'  // Mybatis-Plus导入项
+//    implementation 'org.jetbrains:annotations:22.0.0'  // IDEA在编译期验证null/非null的注解导入
+    compileOnly 'org.projectlombok:lombok:1.18.24'  // lombok(自动生成实体和log对象)导入类
+    runtimeOnly 'mysql:mysql-connector-java:8.0.29'  // MySQL JDBC(数据库连接)导入项
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
+}
+
+test {
+    useJUnitPlatform()
+}

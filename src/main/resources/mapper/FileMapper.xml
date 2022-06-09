@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.goodsmanage.mapper.FileMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.goodsmanage.model.FileModel">
+            <id property="fid" column="FID" jdbcType="DECIMAL"/>
+            <result property="hash" column="HASH" jdbcType="VARCHAR"/>
+            <result property="fileBlob" column="file_blob" jdbcType="BLOB" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        FID,HASH,FILE_BLOB
+    </sql>
+    <select id="findOneByFid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from FILES
+        where
+        FID = #{fid,jdbcType=NUMERIC}
+    </select>
+    <select id="findOneByHash" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from FILES
+        where
+        HASH = #{hash,jdbcType=VARCHAR}
+    </select>
+    <select id="findOneByFidAndHash" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from FILES
+        where
+        FID = #{fid,jdbcType=NUMERIC}
+        AND HASH = #{hash,jdbcType=VARCHAR}
+    </select>
+    <insert id="insertAll">
+        insert into FILES
+             (HASH, file_blob)
+        values (#{hash,jdbcType=VARCHAR}, #{fileBlob,jdbcType=BLOB})
+    </insert>
+</mapper>
